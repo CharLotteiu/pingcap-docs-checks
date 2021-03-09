@@ -6,6 +6,7 @@ def check_manual_break(filename):
     two_lines = []
     metadata = 0
     toggle = 0
+    ctoggle = 0
     lineNum = 0
     mark = 0
 
@@ -25,8 +26,13 @@ def check_manual_break(filename):
                     continue
 
                 # Skip html tags and markdownlint tags.
-                if re.match(r'(\s|\t)*((<\/*\w+>)|<!--|-->)\s*\w*',line):
-                    continue
+                if re.match(r'(\s|\t)*((<\/*(.*)>)|<!--|-->)\s*\w*',line):
+                    if re.match(r'(\s|\t)*<pre><code>',line):
+                        ctoggle = 1
+                    elif re.match(r'(\s|\t)*<\/code><\/pre>',line):
+                        ctoggle = 0
+                    else:
+                        continue
 
                 # Skip links and images.
                 if re.match(r'(\s|\t)*!*\[.+\](\(.+\)|: [a-zA-z]+://[^\s]*)',line):
@@ -36,7 +42,7 @@ def check_manual_break(filename):
                 if re.match(r'(\s|\t)*`{3}', line):
                     toggle = abs(1-toggle)
 
-                if toggle == 1:
+                if toggle == 1 or ctoggle == 1:
                     continue
                 else:
                     # Keep a record of the current line and the former line.
