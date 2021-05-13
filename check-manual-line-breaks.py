@@ -27,9 +27,9 @@ def check_manual_break(filename):
 
                 # Skip html tags and markdownlint tags.
                 if re.match(r'(\s|\t)*((<\/*(.*)>)|<!--|-->)\s*\w*',line):
-                    if re.match(r'(\s|\t)*<pre><code>',line):
+                    if re.match(r'(\s|\t)*(<pre><code>|<table>)',line):
                         ctoggle = 1
-                    elif re.match(r'(\s|\t)*<\/code><\/pre>',line):
+                    elif re.match(r'(\s|\t)*(<\/code><\/pre>|<\/table>)',line):
                         ctoggle = 0
                     else:
                         continue
