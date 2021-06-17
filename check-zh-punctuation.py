@@ -12,21 +12,29 @@ def check_zh_punctuation(filename):
     with open(filename, 'r') as file:
         for line in file:
 
+            count = 0
             lineNum += 1
+            punc_inline = ""
 
             for char in line:
 
-                if char in zhon.hanzi.punctuation:
+                if char in zhon.hanzi.punctuation and char != '—' : # '—' does not count
                     flag = 1
-                    pos.append(lineNum)
-                    zh_punc.append(char)
-                    break
+                    if count != 1:
+                        pos.append(lineNum)
+                    punc_inline += char
+                    count = 1
+
+            if punc_inline != "":
+                zh_punc.append(punc_inline)
 
     if flag:
         print("\n" + filename + ": this file has Chinese punctuation in the following lines:\n")
-        for punc in pos:
-            print("Chinese punctuation: L" + str(punc) + "  " + char)
-        print("\nPlease convert these marks into English punctuation.")
+
+        count = 0
+        for lineNum in pos:
+            print("Chinese punctuation: L" + str(lineNum) + " has " + zh_punc[count])
+            count += 1
 
     return flag
 
@@ -41,5 +49,5 @@ if __name__ == "__main__":
                 count+=1
 
     if count:
-        print("\nThe above issues will ruin your article. Please fix them.")
+        print("\nThe above issues will ruin your article. Please convert these marks into English punctuation.")
         exit(1)
