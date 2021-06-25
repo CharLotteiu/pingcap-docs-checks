@@ -34,8 +34,8 @@ def check_manual_break(filename):
                     else:
                         continue
 
-                # Skip links and images.
-                if re.match(r'(\s|\t)*!*\[.+\](\(.+\)|: [a-zA-z]+://[^\s]*)',line):
+                # Skip image links.
+                if re.match(r'(\s|\t)*!\[.+\](\(.+\)|: [a-zA-z]+://[^\s]*)',line):
                     continue
 
                 # Set a toggle to skip code blocks.
