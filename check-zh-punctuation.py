@@ -1,4 +1,4 @@
-import re, sys, os, zhon.hanzi
+import sys, os, zhon.hanzi
 
 # Check Chinese punctuation in English files.
 
@@ -7,6 +7,7 @@ def check_zh_punctuation(filename):
     lineNum = 0
     pos = []
     zh_punc = []
+    acceptable_punc = ['–','—'] # em dash and en dash
     flag = 0
 
     with open(filename, 'r') as file:
@@ -18,7 +19,7 @@ def check_zh_punctuation(filename):
 
             for char in line:
 
-                if char in zhon.hanzi.punctuation and char != '—' : # '—' does not count
+                if char in zhon.hanzi.punctuation and char not in acceptable_punc :
                     flag = 1
                     if count != 1:
                         pos.append(lineNum)
